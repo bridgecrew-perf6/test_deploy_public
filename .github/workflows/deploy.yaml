@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - main
+
+name: deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    name: deploy
+
+    env: 
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Prepare files to deploy
+        run: |
+          mkdir _site
+          cp test.txt _site/
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with: 
+          BRANCH: gh-pages
+          FOLDER: _site
+
